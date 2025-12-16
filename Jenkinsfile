@@ -24,6 +24,15 @@ pipeline {
             }
         }
         
+        stage('SonarQube Analysis') {
+            steps {
+                echo '====== Running SonarQube Analysis ======'
+                withCredentials([string(credentialsId: 'jenkins-sonar', variable: 'SONAR_TOKEN')]) {
+                    sh 'mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN'
+                }
+            }
+        }
+        
         stage('Build Docker Image') {
             steps {
                 echo '====== Building Docker image ======'
